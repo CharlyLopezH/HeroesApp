@@ -1,23 +1,22 @@
-import getHeroesByPublisher from "../helpers/getHeroesByPublisher";
-import HeroCard from "./HeroCard";
+import { useMemo } from 'react';
+import { HeroCard } from '../components/';
+import { getHeroesByPublisher } from '../helpers';
 
-export const HeroList=({publisher})=>{
+export const HeroList = ({ publisher }) => {
 
-    console.log('Filtraré por '+publisher);
+    const heroes = useMemo( () => getHeroesByPublisher( publisher ), [ publisher ]);
 
-    const heroList = getHeroesByPublisher(publisher).map(item=>(<HeroCard key={item.id} 
-                                                                              {...item }/>)); 
-
-return (
-    <div>
-        <h3>Listado de Heroes (By {publisher})</h3>
+    return (
         <div className="row rows-cols-1 row-cols-md-3 g-3">
             {
-                heroList
-            }            
+                heroes.map( hero => (
+                    <HeroCard 
+                        key={ hero.id } 
+                        { ...hero }
+                    />
+                ))
+            }
         </div>
-    </div>
-);
-
+    )
 }
 export default HeroList;
